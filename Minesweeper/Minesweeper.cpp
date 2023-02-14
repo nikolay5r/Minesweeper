@@ -8,20 +8,34 @@ const int DIFFICULTY_SIZES[3] = { 12, 18, 24 };
 int difficultyChosen()
 {
 	std::cout << "Choose difficulty of the game: \n"
-		<< "\t0: easy\n"
-		<< "\t1: medium\n"
-		<< "\t2: hard\n";
+		<< "   easy - 0\n"
+		<< "   medium - 1\n"
+		<< "   hard - 2\n";
 	int chosenDifficulty = 0;
 	std::cin >> chosenDifficulty;
 
 	return chosenDifficulty;
 }
 
+void printField(vector<vector<char>> field)
+{
+	for (int i = 0; i < field.size(); i++)
+	{
+		for (int j = 0; j < field.size(); j++)
+		{
+			std::cout << " " << field[i][j] << " ";
+		}
+		std::cout << '\n';
+	}
+}
+
 int main()
 {
-	int size = DIFFICULTY_SIZES[difficultyChosen()];
+	int sizeOfField = DIFFICULTY_SIZES[difficultyChosen()];
 	
-	vector<vector<int>> field = vector<vector<int>>(size, vector<int>(size));
+	vector<vector<char>> field = vector<vector<char>>(sizeOfField, vector<char>(sizeOfField, '0'));
+
+	printField(field);
 
 	return 0;
 }
