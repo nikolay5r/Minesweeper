@@ -48,6 +48,25 @@ void printField(vector<vector<char>> field, int chosenY = 0, int chosenX = 0)
 	}
 }
 
+void moveToDifferentBoxes(const vector<vector<char>> field, const char keyPressed, int& chosenX, int& chosenY)
+{
+	switch (keyPressed)
+	{
+	case 'w':
+		chosenY = (chosenY == 0) ? 0 : chosenY - 1;
+		break;
+	case 's':
+		chosenY = (chosenY == (field.size() - 1)) ? chosenY : chosenY + 1;
+		break;
+	case 'a':
+		chosenX = (chosenX == 0) ? 0 : chosenX - 1;
+		break;
+	case 'd':
+		chosenX = (chosenX == (field.size() - 1)) ? chosenX : chosenX + 1;
+		break;
+	}
+}
+
 void chooseAction(vector<vector<char>>& field, int chosenX = 0, int chosenY = 0)
 {
 	bool isGameOver = false;
@@ -55,22 +74,14 @@ void chooseAction(vector<vector<char>>& field, int chosenX = 0, int chosenY = 0)
 	{
 		printField(field, chosenY, chosenX);
 
-		int keyPressed = _getch();
+		char keyPressed = _getch();
 
 		switch (keyPressed)
 		{
-		case 'w':
-			chosenY = (chosenY == 0) ? 0 : chosenY - 1;
+		case 'w': case 's': case 'a': case 'd':
+			moveToDifferentBoxes(field, keyPressed, chosenX, chosenY);
 			break;
-		case 's':
-			chosenY = (chosenY == (field.size() - 1)) ? chosenY : chosenY + 1;
-			break;
-		case 'a':
-			chosenX = (chosenX == 0) ? 0 : chosenX - 1;
-			break;
-		case 'd':
-			chosenX = (chosenX == (field.size() - 1)) ? chosenX : chosenX + 1;
-			break;
+		
 		}
 
 		system("cls");
