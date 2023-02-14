@@ -71,7 +71,7 @@ void countBombsNearBoxes(vector<vector<char>>& field, const int sizeOfField)
 	}
 }
 
-void printField(const vector<vector<char>> field, const int sizeOfField, int chosenY = 0, int chosenX = 0)
+void printField(const vector<vector<char>> field, const int sizeOfField, const int bombsLeft, int chosenY = 0, int chosenX = 0)
 {
 	printTitle();
 	for (int i = 0; i < sizeOfField; i++)
@@ -87,6 +87,7 @@ void printField(const vector<vector<char>> field, const int sizeOfField, int cho
 		
 		}
 		std::cout << '\n';
+		std::cout << "Bombs left to be flagged: " << bombsLeft;
 	}
 }
 
@@ -213,7 +214,7 @@ void chooseAction(vector<vector<char>>& actualField, vector<vector<char>>& userF
 	while (!isGameOver)
 	{
 		system("cls");
-		printField(userField, sizeOfField, chosenY, chosenX);
+		printField(userField, sizeOfField, bombsLeft, chosenY, chosenX);
 
 		char keyPressed = _getch();
 
