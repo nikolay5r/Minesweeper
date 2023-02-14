@@ -1,14 +1,16 @@
 #include <iostream>
 #include <conio.h>
 #include <vector>
+#include <cstdlib>
 
 using std::vector;
 
 const int DIFFICULTY_SIZES[3] = { 12, 18, 24 };
+const int NUMBER_OF_BOMBS[3] = { 40, 80, 120 };
 
 void printTitle()
 {
-	std::cout << "\n\t    ---------MINESWEEPER---------\n";
+	std::cout << "\n\t    ---------MINESWEEPER---------\n\n";
 }
 
 int difficultyChosen()
@@ -81,7 +83,6 @@ void chooseAction(vector<vector<char>>& field, int chosenX = 0, int chosenY = 0)
 		case 'w': case 's': case 'a': case 'd':
 			moveToDifferentBoxes(field, keyPressed, chosenX, chosenY);
 			break;
-		
 		}
 
 		system("cls");
@@ -89,12 +90,34 @@ void chooseAction(vector<vector<char>>& field, int chosenX = 0, int chosenY = 0)
 	}
 }
 
+void generateBombsInField(vector<vector<char>>& field, int& bombsToPut)
+{
+	while (bombsToPut > 0)
+	{
+		int x = rand() % field.size();
+		int y = rand() % field.size();
+
+		if (field[y][x] != '*')
+		{
+			field[y][x] = '*';
+			bombsToPut--;
+		}
+		else
+		{
+			generateBombsInField(field, bombsToPut);
+		}
+	}
+}
+
 int main()
 {
-	int sizeOfField = DIFFICULTY_SIZES[difficultyChosen()];
+	int difficulty = difficultyChosen();
+	int sizeOfField = DIFFICULTY_SIZES[difficulty];
+	int numberOfBombs = NUMBER_OF_BOMBS[difficulty];
 	
 	vector<vector<char>> field = vector<vector<char>>(sizeOfField, vector<char>(sizeOfField, '0'));
 
+	generateBombsInField(field, numberOfBombs);
 	chooseAction(field);
 
 	return 0;
