@@ -5,9 +5,14 @@ using std::vector;
 
 const int DIFFICULTY_SIZES[3] = { 12, 18, 24 };
 
+void printTitle()
+{
+	std::cout << "\n\t---------MINESWEEPER---------\t\n";
+}
+
 int difficultyChosen()
 {
-	std::cout << "\n\n\n";
+	printTitle();
 	std::cout << "\tChoose difficulty of the game: \n"
 		<< "\t   easy - 0\n"
 		<< "\t   medium - 1\n"
@@ -23,7 +28,7 @@ int difficultyChosen()
 
 void printField(vector<vector<char>> field)
 {
-	std::cout << "\n\n\n";
+	printTitle();
 	for (int i = 0; i < field.size(); i++)
 	{
 		std::cout << '\t';
