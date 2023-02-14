@@ -1,4 +1,7 @@
 #include <iostream>
+#include <vector>
+
+using std::vector;
 
 const int DIFFICULTY_SIZES[3] = { 12, 18, 24 };
 
@@ -16,8 +19,9 @@ int difficultyChosen()
 
 int main()
 {
+	int size = DIFFICULTY_SIZES[difficultyChosen()];
 	
-	
+	vector<vector<int>> field = vector<vector<int>>(size, vector<int>(size));
 
 	return 0;
 }
