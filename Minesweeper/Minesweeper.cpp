@@ -120,24 +120,24 @@ void moveToDifferentBoxes(const vector<vector<char>> field, const char keyPresse
 	}
 }
 
-void chooseAction(vector<vector<char>>& field, int chosenX = 0, int chosenY = 0)
+void chooseAction(vector<vector<char>>& actualField, vector<vector<char>>& userField, int chosenX = 0, int chosenY = 0)
 {
 	bool isGameOver = false;
 	while (!isGameOver)
 	{
-		printField(field, chosenY, chosenX);
+		printField(userField, chosenY, chosenX);
 
 		char keyPressed = _getch();
 
 		switch (keyPressed)
 		{
 		case 'w': case 's': case 'a': case 'd':
-			moveToDifferentBoxes(field, keyPressed, chosenX, chosenY);
+			moveToDifferentBoxes(actualField, keyPressed, chosenX, chosenY);
 			break;
 		}
 
 		system("cls");
-		chooseAction(field, chosenX, chosenY);
+		chooseAction(actualField, userField, chosenX, chosenY);
 	}
 }
 
@@ -169,11 +169,12 @@ int main()
 	int sizeOfField = DIFFICULTY_SIZES[difficulty];
 	int numberOfBombs = NUMBER_OF_BOMBS[difficulty];
 	
-	vector<vector<char>> field = vector<vector<char>>(sizeOfField, vector<char>(sizeOfField, '0'));
+	vector<vector<char>> actualField = vector<vector<char>>(sizeOfField, vector<char>(sizeOfField, '0'));
+	vector<vector<char>> userField = vector<vector<char>>(sizeOfField, vector<char>(sizeOfField, '-'));
 
-	generateBombs(field, numberOfBombs);
-	countBombsNearBoxes(field);
-	chooseAction(field);
+	generateBombs(actualField, numberOfBombs);
+	countBombsNearBoxes(actualField);
+	chooseAction(actualField, userField);
 
 	return 0;
 }
