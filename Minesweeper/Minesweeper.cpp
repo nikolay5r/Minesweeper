@@ -14,13 +14,17 @@ int difficultyChosen()
 	int chosenDifficulty = 0;
 	std::cin >> chosenDifficulty;
 
+	system("cls");
+
 	return chosenDifficulty;
 }
 
 void printField(vector<vector<char>> field)
 {
+	std::cout << "\n\n\n";
 	for (int i = 0; i < field.size(); i++)
 	{
+		std::cout << '\t';
 		for (int j = 0; j < field.size(); j++)
 		{
 			std::cout << " " << field[i][j] << " ";
