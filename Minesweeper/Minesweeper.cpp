@@ -7,10 +7,12 @@ const int DIFFICULTY_SIZES[3] = { 12, 18, 24 };
 
 int difficultyChosen()
 {
-	std::cout << "Choose difficulty of the game: \n"
-		<< "   easy - 0\n"
-		<< "   medium - 1\n"
-		<< "   hard - 2\n";
+	std::cout << "\n\n\n";
+	std::cout << "\tChoose difficulty of the game: \n"
+		<< "\t   easy - 0\n"
+		<< "\t   medium - 1\n"
+		<< "\t   hard - 2\n"
+		<< "\tYour choice: ";
 	int chosenDifficulty = 0;
 	std::cin >> chosenDifficulty;
 
