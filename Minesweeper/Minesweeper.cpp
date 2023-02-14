@@ -141,21 +141,25 @@ void chooseAction(vector<vector<char>>& field, int chosenX = 0, int chosenY = 0)
 	}
 }
 
-void generateBombs(vector<vector<char>>& field, int& bombsToPut)
+void generateCoordinates(vector<vector<char>>& field, int& x, int& y)
 {
+	x = rand() % field.size();
+	y = rand() % field.size();
+
+	if (field[y][x] == '*')
+		generateCoordinates(field, x, y);
+
+}
+
+void generateBombs(vector<vector<char>>& field, int bombsToPut)
+{
+	srand(time(0));
 	while (bombsToPut > 0)
 	{
-		int x = rand() % field.size();
-		int y = rand() % field.size();
-
-		if (field[y][x] != '*')
-		{
-			field[y][x] = '*';
-			bombsToPut--;
-		}
-		else
-			generateBombs(field, bombsToPut);
-	
+		int x = 0, y = 0;
+		generateCoordinates(field, x, y);
+		bombsToPut--;
+		field[y][x] = '*';
 	}
 }
 
