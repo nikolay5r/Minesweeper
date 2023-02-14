@@ -29,6 +29,59 @@ int difficultyChosen()
 	return chosenDifficulty;
 }
 
+void countBombsNearBoxes(vector<vector<char>>& field)
+{
+	for (int i = 0; i < field.size(); i++)
+	{
+		for (int j = 0; j < field.size(); j++)
+		{
+			int counterForBombs = 0;
+
+			if (field[i][j] == '*')
+			{
+				continue;
+			}
+
+			if (i != field.size() - 1 && i != 0)
+			{
+				if (field[i + 1][j] == '*')
+					counterForBombs++;
+			
+				if (field[i - 1][j] == '*')
+					counterForBombs++;
+
+				if (j != field.size() - 1 && j != 0)
+				{
+					if (field[i - 1][j - 1] == '*')
+						counterForBombs++;
+			
+					if (field[i - 1][j +1] == '*')
+						counterForBombs++;
+
+					if (field[i + 1][j + 1] == '*')
+						counterForBombs++;
+
+					if (field[i + 1][j - 1] == '*')
+						counterForBombs++;
+
+				}
+			}
+
+			if (j != field.size() - 1 && j)
+			{
+				if (field[i][j + 1] == '*')
+					counterForBombs++;
+			
+				if (field[i][j - 1] == '*')
+					counterForBombs++;
+
+			}
+			
+			field[i][j] = (counterForBombs + '0');
+		}
+	}
+}
+
 void printField(vector<vector<char>> field, int chosenY = 0, int chosenX = 0)
 {
 	printTitle();
@@ -38,13 +91,11 @@ void printField(vector<vector<char>> field, int chosenY = 0, int chosenX = 0)
 		for (int j = 0; j < field.size(); j++)
 		{
 			if (i == chosenY && j == chosenX)
-			{
 				std::cout << "[" << field[i][j] << "]";
-			}
+			
 			else
-			{
 				std::cout << " " << field[i][j] << " ";
-			}
+		
 		}
 		std::cout << '\n';
 	}
@@ -90,7 +141,7 @@ void chooseAction(vector<vector<char>>& field, int chosenX = 0, int chosenY = 0)
 	}
 }
 
-void generateBombsInField(vector<vector<char>>& field, int& bombsToPut)
+void generateBombs(vector<vector<char>>& field, int& bombsToPut)
 {
 	while (bombsToPut > 0)
 	{
@@ -103,9 +154,8 @@ void generateBombsInField(vector<vector<char>>& field, int& bombsToPut)
 			bombsToPut--;
 		}
 		else
-		{
-			generateBombsInField(field, bombsToPut);
-		}
+			generateBombs(field, bombsToPut);
+	
 	}
 }
 
@@ -117,7 +167,8 @@ int main()
 	
 	vector<vector<char>> field = vector<vector<char>>(sizeOfField, vector<char>(sizeOfField, '0'));
 
-	generateBombsInField(field, numberOfBombs);
+	generateBombs(field, numberOfBombs);
+	countBombsNearBoxes(field);
 	chooseAction(field);
 
 	return 0;
