@@ -205,7 +205,23 @@ void flagBox(vector<vector<char>>& userField, int& bombsLeft, const int x, const
 	}
 }
 
-void chooseAction(vector<vector<char>>& actualField, vector<vector<char>>& userField, const int sizeOfField, const int numberOfBombs, int chosenX = 0, int chosenY = 0)
+bool checkIfFlagsAreOnRightBoxes(const vector<vector<char>> actualField, const vector<vector<char>> userField, const int sizeOfField)
+{
+	for (int i = 0; i < sizeOfField; i++)
+	{
+		for (int j = 0; j < sizeOfField; j++)
+		{
+			if (actualField[i][j] == '*' && userField[i][j] != '+')
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+int playerActions(vector<vector<char>>& actualField, vector<vector<char>>& userField, const int sizeOfField, const int numberOfBombs, int chosenX = 0, int chosenY = 0)
 {
 	bool isGameOver = false;
 
@@ -232,8 +248,16 @@ void chooseAction(vector<vector<char>>& actualField, vector<vector<char>>& userF
 		}
 
 		if (bombsLeft == 0)
-			isGameOver = true;
+		{
+			if (checkIfFlagsAreOnRightBoxes(actualField, userField, sizeOfField))
+				return 1;
+
+			else
+				isGameOver = true;
+		}
 	}
+
+	return 0;
 }
 
 void generateCoordinates(vector<vector<char>>& field, int& x, int& y)
@@ -271,7 +295,15 @@ int main()
 
 	generateBombs(actualField, numberOfBombs);
 	countBombsNearBoxes(actualField, sizeOfField);
-	chooseAction(actualField, userField, sizeOfField, numberOfBombs);
+	
+	if (playerActions(actualField, userField, sizeOfField, numberOfBombs) == 1)
+	{
+
+	}
+	else
+	{
+
+	}
 
 	return 0;
 }
