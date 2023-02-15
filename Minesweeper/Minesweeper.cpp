@@ -6,7 +6,7 @@
 using std::vector;
 
 const int DIFFICULTY_SIZES[3] = { 12, 18, 24 };
-const int NUMBER_OF_BOMBS[3] = { 40, 80, 120 };
+const int NUMBER_OF_BOMBS[3] = { 10, 40, 100 };
 
 void printTitle()
 {
@@ -115,8 +115,9 @@ void moveToDifferentBoxes(const vector<vector<char>> field, const int sizeOfFiel
 
 void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField, const int sizeOfField, const int x, const int y, bool& isGameOver)
 {
-	userField[y][x] = userField[y][x] == '+' ? '+' : actualField[y][x];
-	
+	if (userField[y][x] == '+' || userField[y][x] == '-')
+		userField[y][x] = actualField[y][x];
+
 	if (actualField[y][x] == '*')
 	{
 		isGameOver = true;
@@ -129,7 +130,7 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 
 			if (actualField[y + 1][x] == '0')
 				openBox(actualField, userField, sizeOfField , x, y + 1, isGameOver);
-
+		
 		}
 		if (y != 0 && (actualField[y - 1][x] != '*' && userField[y - 1][x] == '-'))
 		{
@@ -146,7 +147,7 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 
 			if (actualField[y - 1][x - 1] == '0')
 				openBox(actualField, userField, sizeOfField, x - 1, y - 1, isGameOver);
-
+		
 		}
 		if ((x != (sizeOfField - 1) && y != 0) &&
 			(actualField[y - 1][x + 1] != '*' && userField[y - 1][x + 1] == '-'))
@@ -158,10 +159,10 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 
 		}
 		if ((y != (sizeOfField - 1) && x != (sizeOfField - 1)) &&
-			(actualField[y + 1][x + 1] != '*' && userField[y + 1][x + 1] != '-'))
-		{ 
+			(actualField[y + 1][x + 1] != '*' && userField[y + 1][x + 1] == '-'))
+		{
 			userField[y + 1][x + 1] = actualField[y + 1][x + 1];
-
+			
 			if (actualField[y + 1][x + 1] == '0')
 				openBox(actualField, userField, sizeOfField, x + 1, y + 1, isGameOver);
 
@@ -173,7 +174,7 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 
 			if (actualField[y + 1][x - 1] == '0')
 				openBox(actualField, userField, sizeOfField, x - 1, y + 1, isGameOver);
-
+		
 		}
 		if (x != (sizeOfField - 1) && (actualField[y][x + 1] != '*' && userField[y][x + 1] == '-'))
 		{ 
@@ -181,7 +182,7 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 
 			if (actualField[y][x + 1] == '0')
 				openBox(actualField, userField, sizeOfField, x + 1, y, isGameOver);
-			
+		
 		}
 		if (x != 0 && (actualField[y][x - 1] != '*' && userField[y][x - 1] == '-'))
 		{
@@ -189,7 +190,7 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 
 			if (actualField[y][x - 1] == '0')
 				openBox(actualField, userField, sizeOfField, x - 1, y, isGameOver);
-
+		
 		}
 	}
 }
