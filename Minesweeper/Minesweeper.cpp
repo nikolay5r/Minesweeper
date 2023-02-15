@@ -6,7 +6,7 @@
 using std::vector;
 
 const int DIFFICULTY_SIZES[3] = { 12, 18, 24 };
-const int NUMBER_OF_BOMBS[3] = { 144, 80, 120 };
+const int NUMBER_OF_BOMBS[3] = { 40, 80, 120 };
 
 void printTitle()
 {
@@ -73,7 +73,6 @@ void countBombsNearBoxes(vector<vector<char>>& field, const int sizeOfField)
 
 void printField(const vector<vector<char>> field, const int sizeOfField, const int bombsLeft, int chosenY = 0, int chosenX = 0)
 {
-	printTitle();
 	for (int i = 0; i < sizeOfField; i++)
 	{
 		std::cout << '\t';
@@ -88,7 +87,11 @@ void printField(const vector<vector<char>> field, const int sizeOfField, const i
 		}
 		std::cout << '\n';
 	}
-	std::cout << "Bombs left to be flagged: " << bombsLeft;
+	
+	if (bombsLeft != 0)
+	{
+		std::cout << "Bombs left to be flagged: " << bombsLeft;
+	}
 }
 
 void moveToDifferentBoxes(const vector<vector<char>> field, const int sizeOfField, const char keyPressed, int& chosenX, int& chosenY)
@@ -221,7 +224,7 @@ bool checkIfFlagsAreOnRightBoxes(const vector<vector<char>> actualField, const v
 	return true;
 }
 
-int playerActions(vector<vector<char>>& actualField, vector<vector<char>>& userField, const int sizeOfField, const int numberOfBombs, int chosenX = 0, int chosenY = 0)
+int playerActions(vector<vector<char>>& actualField, vector<vector<char>>& userField, const int sizeOfField, const int numberOfBombs, int& chosenX, int& chosenY)
 {
 	bool isGameOver = false;
 
@@ -230,6 +233,8 @@ int playerActions(vector<vector<char>>& actualField, vector<vector<char>>& userF
 	while (!isGameOver)
 	{
 		system("cls");
+		
+		printTitle();
 		printField(userField, sizeOfField, bombsLeft, chosenY, chosenX);
 
 		char keyPressed = _getch();
@@ -284,6 +289,24 @@ void generateBombs(vector<vector<char>>& field, int bombsToPut)
 	}
 }
 
+void printVictoryScreen(const vector<vector<char>> actualField, const vector<vector<char>> userField, const int sizeOfField, const int x, const int y)
+{
+	system("cls");
+	printTitle();
+	printField(userField, sizeOfField, 0, x, y);
+	std::cout << "\n\t  Congratulations! You won!\n\n";
+	printField(actualField, sizeOfField, 0, x, y);
+}
+
+void printLoseScreen(const vector<vector<char>> actualField, const vector<vector<char>> userField, const int sizeOfField, const int x, const int y)
+{
+	system("cls");
+	printTitle();
+	printField(userField, sizeOfField, 0, x, y);
+	std::cout << "\n\t   You lost! Try again!\n\n";
+	printField(actualField, sizeOfField, 0, x, y);
+}
+
 int main()
 {
 	int difficulty = difficultyChosen();
@@ -296,13 +319,16 @@ int main()
 	generateBombs(actualField, numberOfBombs);
 	countBombsNearBoxes(actualField, sizeOfField);
 	
-	if (playerActions(actualField, userField, sizeOfField, numberOfBombs) == 1)
-	{
+	int positionOfX = sizeOfField / 2 - 1,
+		positionOfY = sizeOfField / 2 - 1;
 
+	if (playerActions(actualField, userField, sizeOfField, numberOfBombs, positionOfX, positionOfY) == 1)
+	{
+		printVictoryScreen(actualField, userField, sizeOfField, positionOfX, positionOfY);
 	}
 	else
 	{
-
+		printLoseScreen(actualField, userField, sizeOfField, positionOfX, positionOfY);
 	}
 
 	return 0;
