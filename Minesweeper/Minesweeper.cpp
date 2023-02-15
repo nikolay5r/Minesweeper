@@ -7,6 +7,7 @@ using std::vector;
 
 const int DIFFICULTY_SIZES[3] = { 12, 18, 24 };
 const int NUMBER_OF_BOMBS[3] = { 10, 40, 100 };
+const unsigned char BOMB_SYMBOL = 162;
 
 void printTitle()
 {
@@ -29,7 +30,7 @@ int difficultyChosen()
 	return chosenDifficulty;
 }
 
-void countBombsNearBoxes(vector<vector<char>>& field, const int sizeOfField)
+void countBombsNearBoxes(vector<vector<unsigned char>>& field, const int sizeOfField)
 {
 	int sizeOfField1 = field.size() - 1;
 
@@ -39,31 +40,31 @@ void countBombsNearBoxes(vector<vector<char>>& field, const int sizeOfField)
 		{
 			int counterForBombs = 0;
 
-			if (field[i][j] == '*')
+			if (field[i][j] == BOMB_SYMBOL)
 				continue;
 
-			if (i != sizeOfField - 1 && field[i + 1][j] == '*')
+			if (i != sizeOfField - 1 && field[i + 1][j] == BOMB_SYMBOL)
 				counterForBombs++;
 
-			if (i != 0 && field[i - 1][j] == '*')
+			if (i != 0 && field[i - 1][j] == BOMB_SYMBOL)
 				counterForBombs++;
 
-			if (j != 0 && i != 0 && field[i - 1][j - 1] == '*')
+			if (j != 0 && i != 0 && field[i - 1][j - 1] == BOMB_SYMBOL)
 				counterForBombs++;
 
-			if (j != sizeOfField - 1 && i != 0 && field[i - 1][j + 1] == '*')
+			if (j != sizeOfField - 1 && i != 0 && field[i - 1][j + 1] == BOMB_SYMBOL)
 				counterForBombs++;
 
-			if (i != sizeOfField - 1 && j != sizeOfField - 1 && field[i + 1][j + 1] == '*')
+			if (i != sizeOfField - 1 && j != sizeOfField - 1 && field[i + 1][j + 1] == BOMB_SYMBOL)
 				counterForBombs++;
 
-			if (i != sizeOfField - 1 && j != 0 && field[i + 1][j - 1] == '*')
+			if (i != sizeOfField - 1 && j != 0 && field[i + 1][j - 1] == BOMB_SYMBOL)
 				counterForBombs++;
 
-			if (j != sizeOfField - 1 && field[i][j + 1] == '*')
+			if (j != sizeOfField - 1 && field[i][j + 1] == BOMB_SYMBOL)
 				counterForBombs++;
 
-			if (j != 0 && field[i][j - 1] == '*')
+			if (j != 0 && field[i][j - 1] == BOMB_SYMBOL)
 				counterForBombs++;
 
 			field[i][j] = (counterForBombs + '0');
@@ -71,7 +72,7 @@ void countBombsNearBoxes(vector<vector<char>>& field, const int sizeOfField)
 	}
 }
 
-void printField(const vector<vector<char>> field, const int sizeOfField, const int bombsLeft, int chosenY = 0, int chosenX = 0)
+void printField(const vector<vector<unsigned char>> field, const int sizeOfField, const int bombsLeft, int chosenY = 0, int chosenX = 0)
 {
 	for (int i = 0; i < sizeOfField; i++)
 	{
@@ -94,7 +95,7 @@ void printField(const vector<vector<char>> field, const int sizeOfField, const i
 	}
 }
 
-void moveToDifferentBoxes(const vector<vector<char>> field, const int sizeOfField, const char keyPressed, int& chosenX, int& chosenY)
+void moveToDifferentBoxes(const vector<vector<unsigned char>> field, const int sizeOfField, const char keyPressed, int& chosenX, int& chosenY)
 {
 	switch (keyPressed)
 	{
@@ -113,18 +114,18 @@ void moveToDifferentBoxes(const vector<vector<char>> field, const int sizeOfFiel
 	}
 }
 
-void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField, const int sizeOfField, const int x, const int y, bool& isGameOver)
+void openBox(vector<vector<unsigned char>>& actualField, vector<vector<unsigned char>>& userField, const int sizeOfField, const int x, const int y, bool& isGameOver)
 {
 	if (userField[y][x] == '+' || userField[y][x] == '-')
 		userField[y][x] = actualField[y][x];
 
-	if (actualField[y][x] == '*')
+	if (actualField[y][x] == BOMB_SYMBOL)
 	{
 		isGameOver = true;
 	}
 	else if (actualField[y][x] == '0')
 	{
-		if (y != (sizeOfField - 1) && (actualField[y + 1][x] != '*' && userField[y + 1][x] == '-'))
+		if (y != (sizeOfField - 1) && (actualField[y + 1][x] != BOMB_SYMBOL && userField[y + 1][x] == '-'))
 		{
 			userField[y + 1][x] = actualField[y + 1][x];
 
@@ -132,7 +133,7 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 				openBox(actualField, userField, sizeOfField , x, y + 1, isGameOver);
 		
 		}
-		if (y != 0 && (actualField[y - 1][x] != '*' && userField[y - 1][x] == '-'))
+		if (y != 0 && (actualField[y - 1][x] != BOMB_SYMBOL && userField[y - 1][x] == '-'))
 		{
 			userField[y - 1][x] = actualField[y - 1][x];
 
@@ -141,7 +142,7 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 
 		}
 		if ((x != 0 && y != 0) && 
-			(actualField[y - 1][x - 1] != '*' && userField[y - 1][x - 1] == '-'))
+			(actualField[y - 1][x - 1] != BOMB_SYMBOL && userField[y - 1][x - 1] == '-'))
 		{
 			userField[y - 1][x - 1] = actualField[y - 1][x - 1];
 
@@ -150,7 +151,7 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 		
 		}
 		if ((x != (sizeOfField - 1) && y != 0) &&
-			(actualField[y - 1][x + 1] != '*' && userField[y - 1][x + 1] == '-'))
+			(actualField[y - 1][x + 1] != BOMB_SYMBOL && userField[y - 1][x + 1] == '-'))
 		{
 			userField[y - 1][x + 1] = actualField[y - 1][x + 1];
 
@@ -159,7 +160,7 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 
 		}
 		if ((y != (sizeOfField - 1) && x != (sizeOfField - 1)) &&
-			(actualField[y + 1][x + 1] != '*' && userField[y + 1][x + 1] == '-'))
+			(actualField[y + 1][x + 1] != BOMB_SYMBOL && userField[y + 1][x + 1] == '-'))
 		{
 			userField[y + 1][x + 1] = actualField[y + 1][x + 1];
 			
@@ -168,7 +169,7 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 
 		}
 		if ((y != (sizeOfField - 1) && x != 0) &&
-			(actualField[y + 1][x - 1] != '*' && userField[y + 1][x - 1] == '-'))
+			(actualField[y + 1][x - 1] != BOMB_SYMBOL && userField[y + 1][x - 1] == '-'))
 		{
 			userField[y + 1][x - 1] = actualField[y + 1][x - 1];
 
@@ -176,7 +177,7 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 				openBox(actualField, userField, sizeOfField, x - 1, y + 1, isGameOver);
 		
 		}
-		if (x != (sizeOfField - 1) && (actualField[y][x + 1] != '*' && userField[y][x + 1] == '-'))
+		if (x != (sizeOfField - 1) && (actualField[y][x + 1] != BOMB_SYMBOL && userField[y][x + 1] == '-'))
 		{ 
 			userField[y][x + 1] = actualField[y][x + 1];
 
@@ -184,7 +185,7 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 				openBox(actualField, userField, sizeOfField, x + 1, y, isGameOver);
 		
 		}
-		if (x != 0 && (actualField[y][x - 1] != '*' && userField[y][x - 1] == '-'))
+		if (x != 0 && (actualField[y][x - 1] != BOMB_SYMBOL && userField[y][x - 1] == '-'))
 		{
 			userField[y][x - 1] = actualField[y][x - 1];
 
@@ -195,7 +196,7 @@ void openBox(vector<vector<char>>& actualField, vector<vector<char>>& userField,
 	}
 }
 
-void flagBox(vector<vector<char>>& userField, int& bombsLeft, const int x, const int y)
+void flagBox(vector<vector<unsigned char>>& userField, int& bombsLeft, const int x, const int y)
 {
 	if (userField[y][x] == '-')
 	{
@@ -209,13 +210,13 @@ void flagBox(vector<vector<char>>& userField, int& bombsLeft, const int x, const
 	}
 }
 
-bool checkIfFlagsAreOnRightBoxes(const vector<vector<char>> actualField, const vector<vector<char>> userField, const int sizeOfField)
+bool checkIfFlagsAreOnRightBoxes(const vector<vector<unsigned char>> actualField, const vector<vector<unsigned char>> userField, const int sizeOfField)
 {
 	for (int i = 0; i < sizeOfField; i++)
 	{
 		for (int j = 0; j < sizeOfField; j++)
 		{
-			if (actualField[i][j] == '*' && userField[i][j] != '+')
+			if (actualField[i][j] == BOMB_SYMBOL && userField[i][j] != '+')
 			{
 				return false;
 			}
@@ -225,7 +226,7 @@ bool checkIfFlagsAreOnRightBoxes(const vector<vector<char>> actualField, const v
 	return true;
 }
 
-int playerActions(vector<vector<char>>& actualField, vector<vector<char>>& userField, const int sizeOfField, const int numberOfBombs, int& chosenX, int& chosenY)
+int playerActions(vector<vector<unsigned char>>& actualField, vector<vector<unsigned char>>& userField, const int sizeOfField, const int numberOfBombs, int& chosenX, int& chosenY)
 {
 	bool isGameOver = false;
 
@@ -266,19 +267,19 @@ int playerActions(vector<vector<char>>& actualField, vector<vector<char>>& userF
 	return 0;
 }
 
-void generateCoordinates(vector<vector<char>>& field, int& x, int& y)
+void generateCoordinates(vector<vector<unsigned char>>& field, int& x, int& y)
 {
 	int sizeOfField = field.size();
 
 	x = rand() % sizeOfField;
 	y = rand() % sizeOfField;
 
-	if (field[y][x] == '*')
+	if (field[y][x] == BOMB_SYMBOL)
 		generateCoordinates(field, x, y);
 
 }
 
-void generateBombs(vector<vector<char>>& field, int bombsToPut)
+void generateBombs(vector<vector<unsigned char>>& field, int bombsToPut)
 {
 	srand(time(0));
 	while (bombsToPut > 0)
@@ -286,11 +287,11 @@ void generateBombs(vector<vector<char>>& field, int bombsToPut)
 		int x = 0, y = 0;
 		generateCoordinates(field, x, y);
 		bombsToPut--;
-		field[y][x] = '*';
+		field[y][x] = BOMB_SYMBOL;
 	}
 }
 
-void printVictoryScreen(const vector<vector<char>> actualField, const vector<vector<char>> userField, const int sizeOfField, const int x, const int y)
+void printVictoryScreen(const vector<vector<unsigned char>> actualField, const vector<vector<unsigned char>> userField, const int sizeOfField, const int x, const int y)
 {
 	system("cls");
 	printTitle();
@@ -299,7 +300,7 @@ void printVictoryScreen(const vector<vector<char>> actualField, const vector<vec
 	printField(actualField, sizeOfField, 0, x, y);
 }
 
-void printLoseScreen(const vector<vector<char>> actualField, const vector<vector<char>> userField, const int sizeOfField, const int x, const int y)
+void printLoseScreen(const vector<vector<unsigned char>> actualField, const vector<vector<unsigned char>> userField, const int sizeOfField, const int x, const int y)
 {
 	system("cls");
 	printTitle();
@@ -314,8 +315,8 @@ int main()
 	int sizeOfField = DIFFICULTY_SIZES[difficulty];
 	int numberOfBombs = NUMBER_OF_BOMBS[difficulty];
 	
-	vector<vector<char>> actualField = vector<vector<char>>(sizeOfField, vector<char>(sizeOfField, '0'));
-	vector<vector<char>> userField = vector<vector<char>>(sizeOfField, vector<char>(sizeOfField, '-'));
+	vector<vector<unsigned char>> actualField = vector<vector<unsigned char>>(sizeOfField, vector<unsigned char>(sizeOfField, '0'));
+	vector<vector<unsigned char>> userField = vector<vector<unsigned char>>(sizeOfField, vector<unsigned char>(sizeOfField, '-'));
 
 	generateBombs(actualField, numberOfBombs);
 	countBombsNearBoxes(actualField, sizeOfField);
