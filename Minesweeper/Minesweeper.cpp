@@ -18,9 +18,9 @@ int difficultyChosen()
 {
 	printTitle();
 	std::cout << "\tChoose difficulty of the game: \n"
-		<< "\t   easy - 0\n"
-		<< "\t   medium - 1\n"
-		<< "\t   hard - 2\n"
+		<< "\t   Easy - 0\n"
+		<< "\t   Medium - 1\n"
+		<< "\t   Hard - 2\n"
 		<< "\tYour choice: ";
 	int chosenDifficulty = 0;
 	std::cin >> chosenDifficulty;
@@ -295,18 +295,18 @@ void printVictoryScreen(const vector<vector<unsigned char>> actualField, const v
 {
 	system("cls");
 	printTitle();
-	printField(userField, sizeOfField, 0, x, y);
+	printField(userField, sizeOfField, 0, y, x);
 	std::cout << "\n\t  Congratulations! You won!\n\n";
-	printField(actualField, sizeOfField, 0, x, y);
+	printField(actualField, sizeOfField, 0, y, x);
 }
 
 void printLoseScreen(const vector<vector<unsigned char>> actualField, const vector<vector<unsigned char>> userField, const int sizeOfField, const int x, const int y)
 {
 	system("cls");
 	printTitle();
-	printField(userField, sizeOfField, 0, x, y);
+	printField(userField, sizeOfField, 0, y, x);
 	std::cout << "\n\t   You lost! Try again!\n\n";
-	printField(actualField, sizeOfField, 0, x, y);
+	printField(actualField, sizeOfField, 0, y, x);
 }
 
 int main()
